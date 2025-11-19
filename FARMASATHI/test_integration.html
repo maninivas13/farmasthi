@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Integration</title>
+</head>
+<body>
+    <h1>Test Backend Connection</h1>
+    <button onclick="testConnection()">Test Connection</button>
+    <button onclick="testRegister()">Test Register</button>
+    <div id="result"></div>
+
+    <script>
+        const API_BASE = 'http://localhost:8000';
+        
+        async function testConnection() {
+            try {
+                const response = await fetch(`${API_BASE}/health`);
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+        
+        async function testRegister() {
+            try {
+                const response = await fetch(`${API_BASE}/api/auth/register`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: 'Test User',
+                        phone: '1234567890',
+                        password: '1234567890',
+                        location: 'Test Location',
+                        role: 'farmer'
+                    })
+                });
+                
+                const data = await response.json();
+                document.getElementById('result').innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
+            } catch (error) {
+                document.getElementById('result').innerHTML = `<p style="color: red;">Error: ${error.message}</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
